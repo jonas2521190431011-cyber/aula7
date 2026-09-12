@@ -1,3 +1,4 @@
+
 <?php
 
 require __DIR__ . "/../vendor/autoload.php";
@@ -5,19 +6,14 @@ require __DIR__ . "/../vendor/autoload.php";
 use App\DAO\PessoaDAO;
 
 
-/*
-|--------------------------------------------------------------------------
-| BUSCAR PESSOAS
-|--------------------------------------------------------------------------
-*/
+
+
 
 $pessoaDAO = new PessoaDAO();
 
 $pessoas = $pessoaDAO->listar();
 
-
 ?>
-
 
 <!DOCTYPE html>
 
@@ -52,11 +48,11 @@ $pessoas = $pessoaDAO->listar();
         style="
             margin-left: 0;
             font-size: 1.2em;
-            font-weight: bold;
         "
     >
         Sistema CRUD
     </a>
+
 
     <div>
 
@@ -89,7 +85,6 @@ $pessoas = $pessoaDAO->listar();
 </nav>
 
 
-
 <div class="container">
 
 
@@ -104,7 +99,7 @@ $pessoas = $pessoaDAO->listar();
     >
 
 
-        <!-- PESSOA -->
+
 
         <div class="mb-3">
 
@@ -128,21 +123,18 @@ $pessoas = $pessoaDAO->listar();
                 </option>
 
 
-                <?php if (!empty($pessoas)): ?>
+                <?php foreach ($pessoas as $pessoa): ?>
 
-                    <?php foreach ($pessoas as $pessoa): ?>
+                    <option
+                        value="<?= htmlspecialchars($pessoa['id']) ?>"
+                    >
 
-                        <option
-                            value="<?= htmlspecialchars($pessoa['id']) ?>"
-                        >
+                        <?= htmlspecialchars($pessoa['nome']) ?>
 
-                            <?= htmlspecialchars($pessoa['nome']) ?>
+                    </option>
 
-                        </option>
+                <?php endforeach; ?>
 
-                    <?php endforeach; ?>
-
-                <?php endif; ?>
 
             </select>
 
@@ -150,7 +142,7 @@ $pessoas = $pessoaDAO->listar();
 
 
 
-        <!-- DESCRIÇÃO -->
+
 
         <div class="mb-3">
 
@@ -218,7 +210,6 @@ $pessoas = $pessoaDAO->listar();
 
 
 
-        <!-- VALOR -->
 
         <div class="mb-3">
 
@@ -233,7 +224,7 @@ $pessoas = $pessoaDAO->listar();
                 type="number"
                 id="valor"
                 name="valor"
-                placeholder="0,00"
+                placeholder="0.00"
                 step="0.01"
                 min="0.01"
                 required
@@ -243,7 +234,6 @@ $pessoas = $pessoaDAO->listar();
 
 
 
-        
 
         <div class="mb-3">
 
@@ -264,6 +254,9 @@ $pessoas = $pessoaDAO->listar();
 
         </div>
 
+
+
+        <br>
 
 
         <button
@@ -295,3 +288,4 @@ $pessoas = $pessoaDAO->listar();
 </body>
 
 </html>
+```

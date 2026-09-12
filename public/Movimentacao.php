@@ -12,7 +12,6 @@ class Movimentacao
     private string $dataMovimentacao;
 
 
-    // ID
     public function getId(): ?int
     {
         return $this->id;
@@ -24,7 +23,7 @@ class Movimentacao
     }
 
 
-    // PESSOA ID
+ 
     public function getPessoaId(): int
     {
         return $this->pessoaId;
@@ -36,7 +35,6 @@ class Movimentacao
     }
 
 
-    // DESCRIÇÃO
     public function getDescricao(): string
     {
         return $this->descricao;
@@ -48,7 +46,7 @@ class Movimentacao
     }
 
 
-    // TIPO
+
     public function getTipo(): string
     {
         return $this->tipo;
@@ -60,7 +58,6 @@ class Movimentacao
     }
 
 
-    // VALOR
     public function getValor(): float
     {
         return $this->valor;
@@ -72,7 +69,7 @@ class Movimentacao
     }
 
 
-    // DATA
+  
     public function getDataMovimentacao(): string
     {
         return $this->dataMovimentacao;
