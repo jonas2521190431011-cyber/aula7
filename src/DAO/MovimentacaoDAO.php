@@ -6,33 +6,20 @@ use App\Model\Movimentacao;
 use App\Config\Database;
 use PDO;
 
-
 class MovimentacaoDAO
 {
-
     private PDO $conexao;
-
 
     public function __construct()
     {
-
-        $database =
-            new Database();
-
-        $this->conexao =
-            $database->getConnection();
-
+        $database = new Database();
+        $this->conexao = $database->getConnection();
     }
 
-
-    public function inserir(
-        Movimentacao $movimentacao
-    ): bool {
-
+    public function inserir(Movimentacao $movimentacao): bool
+    {
         $sql = "
-
             INSERT INTO movimentacao
-
             (
                 idPessoa,
                 Credito,
@@ -40,9 +27,7 @@ class MovimentacaoDAO
                 DataOperacao,
                 Observacao
             )
-
             VALUES
-
             (
                 :idPessoa,
                 :credito,
@@ -50,15 +35,9 @@ class MovimentacaoDAO
                 :dataOperacao,
                 :observacao
             )
-
         ";
 
-
-        $stmt =
-            $this->conexao->prepare(
-                $sql
-            );
-
+        $stmt = $this->conexao->prepare($sql);
 
         $stmt->bindValue(
             ':idPessoa',
@@ -66,75 +45,46 @@ class MovimentacaoDAO
             PDO::PARAM_INT
         );
 
-
         $stmt->bindValue(
             ':credito',
             $movimentacao->getCredito()
         );
-
 
         $stmt->bindValue(
             ':debito',
             $movimentacao->getDebito()
         );
 
-
         $stmt->bindValue(
             ':dataOperacao',
             $movimentacao->getDataOperacao()
         );
-
 
         $stmt->bindValue(
             ':observacao',
             $movimentacao->getObservacao()
         );
 
-
         return $stmt->execute();
-
     }
-
 
     public function listar(): array
     {
-
         $sql = "
-
             SELECT
-
-                m.*,
-
-                p.nome AS pessoa_nome
-
-            FROM movimentacao m
-
-            LEFT JOIN pessoas p
-
-                ON m.idPessoa = p.id
-
+                movimentacao.*,
+                pessoas.nome AS pessoa_nome
+            FROM movimentacao
+            LEFT JOIN pessoas
+                ON movimentacao.idPessoa = pessoas.id
             ORDER BY
-
-                m.DataOperacao DESC,
-
-                m.id DESC
-
+                movimentacao.DataOperacao DESC,
+                movimentacao.id DESC
         ";
 
-
-        $stmt =
-            $this->conexao->prepare(
-                $sql
-            );
-
-
+        $stmt = $this->conexao->prepare($sql);
         $stmt->execute();
 
-
-        return $stmt->fetchAll(
-            PDO::FETCH_ASSOC
-        );
-
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }
