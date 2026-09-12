@@ -21,10 +21,6 @@ class ComposerStaticInite215421d6bdf6a82622339b0588278ae
     );
 
     public static $classMap = array (
-        'App\\Config\\Database' => __DIR__ . '/../..' . '/src/Config/Database.php',
-        'App\\Controller\\HomeController' => __DIR__ . '/../..' . '/src/Controller/HomeController.php',
-        'App\\DAO\\PessoaDAO' => __DIR__ . '/../..' . '/src/DAO/PessoaDAO.php',
-        'App\\Model\\Pessoa' => __DIR__ . '/../..' . '/src/Model/Pessoa.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 

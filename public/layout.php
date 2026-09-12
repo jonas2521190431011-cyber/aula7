@@ -3,43 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gerenciamento</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Sistema de Pessoas</title>
+
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        nav {
+            background: #1e293b;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            background: #334155;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 7px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #1e293b;
+            color: white;
+        }
+
+        input,
+        select {
+            box-sizing: border-box;
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">Sistema CRUD</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?pagina=home">Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?pagina=listar">Pessoas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?pagina=movimentacoes">Movimentações</a>
-                    </li>
-                </ul>
-                <form class="d-flex" action="index.php" method="GET">
-                    <input type="hidden" name="pagina" value="pesquisar">
-                    <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar..." required>
-                    <button class="btn btn-outline-light" type="submit">Buscar</button>
-                </form>
-            </div>
-        </div>
-    </nav>
 
-    <main class="container">
-        <?= $content ?? '' ?>
-    </main>
+<nav>
+    <a href="index.php?pagina=home">Início</a>
+    <a href="index.php?pagina=cadastrar">Cadastrar Pessoa</a>
+    <a href="index.php?pagina=listar">Listar Pessoas</a>
+    <a href="index.php?pagina=pesquisar">Pesquisar Pessoas</a>
+    <a href="movimentacaocreate.php">Nova Movimentação</a>
+    <a href="movimentacaolist.php">Movimentações</a>
+</nav>
 
-    <?php if (file_exists(__DIR__ . '/footer.php')) require_once __DIR__ . '/footer.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="container">
+    <?= $content ?>
+</div>
+
 </body>
 </html>

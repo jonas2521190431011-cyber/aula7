@@ -1,158 +1,297 @@
 <?php
 
-require "../vendor/autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
 
 use App\DAO\PessoaDAO;
+
+
+/*
+|--------------------------------------------------------------------------
+| BUSCAR PESSOAS
+|--------------------------------------------------------------------------
+*/
 
 $pessoaDAO = new PessoaDAO();
 
 $pessoas = $pessoaDAO->listar();
 
-ob_start();
 
 ?>
 
-<h2 class="mb-4">Cadastrar Movimentação</h2>
 
-<form action="movimentacao-cadastrar.php" method="POST">
+<!DOCTYPE html>
 
+<html lang="pt-br">
 
-    <!-- PESSOA -->
-    <div class="mb-3">
+<head>
 
-        <label for="idPessoa" class="form-label">
-            Pessoa
-        </label>
+    <meta charset="UTF-8">
 
-        <select
-            class="form-select"
-            id="idPessoa"
-            name="idPessoa"
-            required
-        >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-            <option value="">
-                Selecione uma pessoa
-            </option>
+    <title>Nova Movimentação</title>
 
-            <?php foreach ($pessoas as $pessoa): ?>
+    <link
+        rel="stylesheet"
+        href="./css/style.css?v=<?php echo time(); ?>"
+    >
 
-                <option value="<?= $pessoa['id'] ?>">
-                    <?= htmlspecialchars($pessoa['nome']) ?>
-                </option>
-
-            <?php endforeach; ?>
-
-        </select>
-
-    </div>
+</head>
 
 
-    <!-- OBSERVAÇÃO -->
-    <div class="mb-3">
-
-        <label for="observacao" class="form-label">
-            Descrição
-        </label>
-
-        <input
-            type="text"
-            class="form-control"
-            id="observacao"
-            name="observacao"
-            maxlength="255"
-            required
-        >
-
-    </div>
+<body>
 
 
-    <!-- TIPO -->
-    <div class="mb-3">
+<nav>
 
-        <label for="tipo" class="form-label">
-            Tipo
-        </label>
-
-        <select
-            class="form-select"
-            id="tipo"
-            name="tipo"
-            required
-        >
-
-            <option value="">
-                Selecione o tipo
-            </option>
-
-            <option value="CREDITO">
-                Entrada (Crédito)
-            </option>
-
-            <option value="DEBITO">
-                Saída (Débito)
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <!-- VALOR -->
-    <div class="mb-3">
-
-        <label for="valor" class="form-label">
-            Valor
-        </label>
-
-        <input
-            type="number"
-            class="form-control"
-            id="valor"
-            name="valor"
-            step="0.01"
-            min="0.01"
-            required
-        >
-
-    </div>
-
-
-    <!-- DATA -->
-    <div class="mb-3">
-
-        <label for="dataOperacao" class="form-label">
-            Data da Operação
-        </label>
-
-        <input
-            type="date"
-            class="form-control"
-            id="dataOperacao"
-            name="dataOperacao"
-            required
-        >
-
-    </div>
-
-
-    <button type="submit" class="btn btn-primary">
-        Cadastrar
-    </button>
-
-    <a href="index.php" class="btn btn-secondary">
-        Voltar
+    <a
+        href="index.php"
+        style="
+            margin-left: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        "
+    >
+        Sistema CRUD
     </a>
 
-</form>
+    <div>
+
+        <a href="index.php?pagina=home">
+            Início
+        </a>
+
+        <a href="index.php?pagina=listar">
+            Pessoas
+        </a>
+
+        <a href="index.php?pagina=cadastrar">
+            Cadastrar
+        </a>
+
+        <a href="index.php?pagina=pesquisar">
+            Pesquisar
+        </a>
+
+        <a href="movimentacaolist.php">
+            Movimentações
+        </a>
+
+        <a href="movimentacaocreate.php">
+            Nova Movimentação
+        </a>
+
+    </div>
+
+</nav>
 
 
-<?php
 
-$content = ob_get_clean();
+<div class="container">
 
-require "layout.php";
 
-require "footer.php";
+    <h2>
+        Nova Movimentação
+    </h2>
 
-?>
+
+    <form
+        action="movimentacaocadastrar.php"
+        method="POST"
+    >
+
+
+        <!-- PESSOA -->
+
+        <div class="mb-3">
+
+            <label for="idPessoa">
+
+                Pessoa
+
+            </label>
+
+
+            <select
+                id="idPessoa"
+                name="idPessoa"
+                required
+            >
+
+                <option value="">
+
+                    Selecione uma pessoa
+
+                </option>
+
+
+                <?php if (!empty($pessoas)): ?>
+
+                    <?php foreach ($pessoas as $pessoa): ?>
+
+                        <option
+                            value="<?= htmlspecialchars($pessoa['id']) ?>"
+                        >
+
+                            <?= htmlspecialchars($pessoa['nome']) ?>
+
+                        </option>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- DESCRIÇÃO -->
+
+        <div class="mb-3">
+
+            <label for="observacao">
+
+                Descrição
+
+            </label>
+
+
+            <input
+                type="text"
+                id="observacao"
+                name="observacao"
+                placeholder="Digite a descrição"
+                maxlength="255"
+                required
+            >
+
+        </div>
+
+
+
+        <!-- TIPO -->
+
+        <div class="mb-3">
+
+            <label for="tipo">
+
+                Tipo da movimentação
+
+            </label>
+
+
+            <select
+                id="tipo"
+                name="tipo"
+                required
+            >
+
+                <option value="">
+
+                    Selecione
+
+                </option>
+
+
+                <option value="CREDITO">
+
+                    Entrada / Crédito
+
+                </option>
+
+
+                <option value="DEBITO">
+
+                    Saída / Débito
+
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+
+        <!-- VALOR -->
+
+        <div class="mb-3">
+
+            <label for="valor">
+
+                Valor
+
+            </label>
+
+
+            <input
+                type="number"
+                id="valor"
+                name="valor"
+                placeholder="0,00"
+                step="0.01"
+                min="0.01"
+                required
+            >
+
+        </div>
+
+
+
+        
+
+        <div class="mb-3">
+
+            <label for="dataOperacao">
+
+                Data da Operação
+
+            </label>
+
+
+            <input
+                type="date"
+                id="dataOperacao"
+                name="dataOperacao"
+                value="<?= date('Y-m-d') ?>"
+                required
+            >
+
+        </div>
+
+
+
+        <button
+            type="submit"
+            class="btn"
+        >
+
+            Cadastrar Movimentação
+
+        </button>
+
+
+        <a
+            href="movimentacaolist.php"
+            class="btn"
+        >
+
+            Ver Movimentações
+
+        </a>
+
+
+    </form>
+
+
+</div>
+
+
+</body>
+
+</html>

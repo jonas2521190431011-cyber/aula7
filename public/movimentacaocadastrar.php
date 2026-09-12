@@ -1,66 +1,231 @@
+```php
 <?php
 
-require "../vendor/autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
 
 use App\Model\Movimentacao;
 use App\DAO\MovimentacaoDAO;
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+/*
+|--------------------------------------------------------------------------
+| VERIFICAR POST
+|--------------------------------------------------------------------------
+*/
 
-    $idPessoa = $_POST['idPessoa'] ?? null;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-    $observacao = $_POST['observacao'] ?? '';
+    header(
+        'Location: movimentacaocreate.php'
+    );
 
-    $tipo = $_POST['tipo'] ?? '';
+    exit;
 
-    $valor = $_POST['valor'] ?? 0;
-
-    $dataOperacao = $_POST['dataOperacao'] ?? null;
-
-    $movimentacao = new Movimentacao();
-
-    $movimentacao->setIdPessoa((int)$idPessoa);
-
-    $movimentacao->setObservacao($observacao);
-
-    $movimentacao->setDataOperacao($dataOperacao);
+}
 
 
+/*
+|--------------------------------------------------------------------------
+| RECEBER DADOS
+|--------------------------------------------------------------------------
+*/
 
-    if ($tipo === 'CREDITO') {
+$idPessoa = (int) (
+    $_POST['idPessoa'] ?? 0
+);
 
-        $movimentacao->setCredito((float)$valor);
+$observacao = trim(
+    $_POST['observacao'] ?? ''
+);
 
-        $movimentacao->setDebito(null);
-    }
+$tipo = $_POST['tipo'] ?? '';
 
-    if ($tipo === 'DEBITO') {
+$valor = (float) (
+    $_POST['valor'] ?? 0
+);
 
-        $movimentacao->setDebito((float)$valor);
+$dataOperacao =
+    $_POST['dataOperacao']
+    ?? date('Y-m-d');
 
-        $movimentacao->setCredito(null);
-    }
-    $dao = new MovimentacaoDAO();
 
-    if ($dao->inserir($movimentacao)) {
+/*
+|--------------------------------------------------------------------------
+| VALIDAR
+|--------------------------------------------------------------------------
+*/
 
-        echo "<script>
+if (
+    $idPessoa <= 0 ||
+    $observacao === '' ||
+    $valor <= 0 ||
+    !in_array(
+        $tipo,
+        ['CREDITO', 'DEBITO'],
+        true
+    )
+) {
 
-            alert('Movimentação cadastrada com sucesso!');
+    echo "
 
-            window.location = 'movimentacao-create.php';
+        <script>
 
-        </script>";
+            alert(
+                'Preencha todos os campos corretamente!'
+            );
+
+            window.location =
+                'movimentacaocreate.php';
+
+        </script>
+
+    ";
+
+    exit;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CRIAR MOVIMENTAÇÃO
+|--------------------------------------------------------------------------
+*/
+
+$movimentacao =
+    new Movimentacao();
+
+
+$movimentacao->setIdPessoa(
+    $idPessoa
+);
+
+
+$movimentacao->setObservacao(
+    $observacao
+);
+
+
+$movimentacao->setDataOperacao(
+    $dataOperacao
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| CRÉDITO
+|--------------------------------------------------------------------------
+*/
+
+if ($tipo === 'CREDITO') {
+
+    $movimentacao->setCredito(
+        $valor
+    );
+
+    $movimentacao->setDebito(
+        null
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| DÉBITO
+|--------------------------------------------------------------------------
+*/
+
+if ($tipo === 'DEBITO') {
+
+    $movimentacao->setDebito(
+        $valor
+    );
+
+    $movimentacao->setCredito(
+        null
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| SALVAR
+|--------------------------------------------------------------------------
+*/
+
+try {
+
+    $dao =
+        new MovimentacaoDAO();
+
+
+    if (
+        $dao->inserir(
+            $movimentacao
+        )
+    ) {
+
+        echo "
+
+            <script>
+
+                alert(
+                    'Movimentação cadastrada com sucesso!'
+                );
+
+                window.location =
+                    'movimentacaolist.php';
+
+            </script>
+
+        ";
 
     } else {
 
-        echo "<script>
+        echo "
 
-            alert('Erro ao cadastrar movimentação!');
+            <script>
 
-            window.location = 'movimentacao-create.php';
+                alert(
+                    'Erro ao cadastrar movimentação!'
+                );
 
-        </script>";
+                window.location =
+                    'movimentacaocreate.php';
+
+            </script>
+
+        ";
+
     }
+
+} catch (Exception $e) {
+
+    echo "
+
+        <h2>Erro ao cadastrar movimentação</h2>
+
+        <p>
+
+            " .
+            htmlspecialchars(
+                $e->getMessage()
+            )
+            . "
+
+        </p>
+
+        <a
+            href='movimentacaocreate.php'
+        >
+
+            Voltar
+
+        </a>
+
+    ";
+
 }
+
+exit;
