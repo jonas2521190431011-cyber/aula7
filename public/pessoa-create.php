@@ -1,8 +1,8 @@
 <?php
-require_once 'Conexao.php'; // Inclui a conexão com o banco
+require_once 'Conexao.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recebe e limpa os dados do formulário
+    
     $nome = trim($_POST['nome'] ?? '');
     $cpf = trim($_POST['cpf'] ?? '');
     $telefone = trim($_POST['telefone'] ?? '');
