@@ -7,6 +7,7 @@ use App\Model\Pessoa;
 
 $pessoaDAO = new PessoaDAO();
 
+// Processa o cadastro de pessoas
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
     $p = new Pessoa();
     $p->setNome($_POST['nome']);
@@ -22,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
 ob_start(); 
 
 $pagina = $_GET['pagina'] ?? 'home';
+
 
 if ($pagina === 'home') {
     $controller = new HomeController();
@@ -62,9 +64,9 @@ elseif ($pagina === 'listar') {
     ?>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2>Pessoas Cadastradas</h2>
-        <a href="index.php?pagina=cadastrar" class="btn">Nova Pessoa</a>
+        <a href="index.php?pagina=cadastrar" class="btn btn-primary">Nova Pessoa</a>
     </div>
-    <table>
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>ID</th>
@@ -85,8 +87,8 @@ elseif ($pagina === 'listar') {
                         <td><?= htmlspecialchars($p['telefone'] ?? '') ?></td>
                         <td><?= htmlspecialchars($p['endereco'] ?? '') ?></td>
                         <td>
-                            <a href="index.php?pagina=editar&id=<?= $p['id'] ?>" class="btn">Editar</a>
-                            <a href="index.php?pagina=excluir&id=<?= $p['id'] ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+                            <a href="index.php?pagina=editar&id=<?= $p['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="index.php?pagina=excluir&id=<?= $p['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -98,6 +100,9 @@ elseif ($pagina === 'listar') {
         </tbody>
     </table>
     <?php
+}
+elseif ($pagina === 'movimentacoes') {
+    require __DIR__ . '/movimentacaolist.php';
 }
 elseif ($pagina === 'editar') {
     require __DIR__ . '/pessoaeditar.php';
