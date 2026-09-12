@@ -11,10 +11,6 @@ body {
 }
 
 
-/* =========================
-   MENU (ATUALIZADO PARA PRETO)
-========================= */
-
 nav {
     background: linear-gradient(135deg, #000000, #111827);
     min-height: 70px;
@@ -47,9 +43,6 @@ nav a:hover {
 }
 
 
-/* =========================
-   CONTAINER
-========================= */
 
 .container {
     width: 90%;
@@ -59,9 +52,6 @@ nav a:hover {
 }
 
 
-/* =========================
-   TÍTULOS
-========================= */
 
 h1 {
     font-size: 30px;
@@ -84,9 +74,6 @@ p {
 }
 
 
-/* =========================
-   CARDS
-========================= */
 
 .card {
     background: #ffffff;
@@ -113,9 +100,7 @@ p {
 }
 
 
-/* =========================
-   BOTÕES
-========================= */
+
 
 .btn {
     display: inline-flex;
@@ -158,11 +143,6 @@ p {
         0 8px 18px rgba(37, 99, 235, 0.35);
 }
 
-
-/* =========================
-   BOTÃO PERIGO
-========================= */
-
 .btn-danger {
     background: linear-gradient(
         135deg,
@@ -183,9 +163,7 @@ p {
 }
 
 
-/* =========================
-   BOTÃO VERDE
-========================= */
+
 
 .btn-success {
     background: linear-gradient(
@@ -196,9 +174,7 @@ p {
 }
 
 
-/* =========================
-   BOTÃO AMARELO
-========================= */
+
 
 .btn-warning {
     background: linear-gradient(
@@ -208,10 +184,6 @@ p {
     );
 }
 
-
-/* =========================
-   TABELA
-========================= */
 
 table {
     width: 100%;
@@ -268,9 +240,6 @@ tbody tr:last-child td {
 }
 
 
-/* =========================
-   FORMULÁRIOS
-========================= */
 
 label {
     display: block;
@@ -402,9 +371,6 @@ textarea {
 }
 
 
-/* =========================
-   ALERTAS
-========================= */
 
 .alert {
     padding: 14px 18px;
@@ -437,9 +403,7 @@ textarea {
 }
 
 
-/* =========================
-   RESPONSIVIDADE
-========================= */
+
 
 @media (max-width: 768px) {
 
