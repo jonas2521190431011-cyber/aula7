@@ -12,11 +12,11 @@ body {
 
 
 /* =========================
-   MENU
+   MENU (ATUALIZADO PARA PRETO)
 ========================= */
 
 nav {
-    background: linear-gradient(135deg, #0f172a, #1e40af);
+    background: linear-gradient(135deg, #000000, #111827);
     min-height: 70px;
     padding: 0 35px;
 
@@ -24,7 +24,7 @@ nav {
     align-items: center;
     gap: 8px;
 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 nav a {
@@ -41,7 +41,7 @@ nav a {
 }
 
 nav a:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     color: #fff;
     transform: translateY(-2px);
 }
@@ -323,10 +323,6 @@ textarea {
 }
 
 
-/* =========================
-   STATUS DOS CHAMADOS
-========================= */
-
 .status {
     display: inline-block;
 
@@ -359,10 +355,6 @@ textarea {
     color: #b91c1c;
 }
 
-
-/* =========================
-   DASHBOARD
-========================= */
 
 .dashboard {
     display: grid;
@@ -485,10 +477,6 @@ textarea {
     }
 }
 
-
-/* =========================
-   SCROLLBAR
-========================= */
 
 ::-webkit-scrollbar {
     width: 8px;
