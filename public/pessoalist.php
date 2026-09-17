@@ -62,7 +62,7 @@ ob_start();
 
                     <td>
 
-                        <!-- VISUALIZAR -->
+                     <!-- VISUALIZAR -->
                         <a
                             href="pessoa-visualizar.php?id=<?= $pessoa['id'] ?>"
                             class="btn btn-info btn-sm"
@@ -71,7 +71,6 @@ ob_start();
                         </a>
 
 
-                        <!-- EDITAR -->
                         <a
                             href="pessoa-editar.php?id=<?= $pessoa['id'] ?>"
                             class="btn btn-warning btn-sm"
@@ -80,7 +79,7 @@ ob_start();
                         </a>
 
 
-                        <!-- EXCLUIR -->
+                        
                         <a
                             href="pessoa-excluir.php?id=<?= $pessoa['id'] ?>"
                             class="btn btn-danger btn-sm"

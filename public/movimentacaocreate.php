@@ -166,8 +166,7 @@ $pessoas = $pessoaDAO->listar();
 
 
 
-        <!-- TIPO -->
-
+       
         <div class="mb-3">
 
             <label for="tipo">
@@ -221,19 +220,13 @@ $pessoas = $pessoaDAO->listar();
 
 
             <input
-                type="number"
-                id="valor"
-                name="valor"
-                placeholder="0.00"
-                step="0.01"
-                min="0.01"
-                required
+    type="text"
+    id="valor"
+    name="valor"
+    placeholder="0,00"
+    required
             >
-
         </div>
-
-
-
 
         <div class="mb-3">
 
