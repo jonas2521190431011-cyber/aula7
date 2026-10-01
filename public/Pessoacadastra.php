@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $endereco = mb_strtoupper($endereco, 'UTF-8');
     }
 
-    // Cria o objeto Pessoa
     $pessoa = new Pessoa();
 
     $pessoa->setNome($nome);
@@ -28,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pessoa->setCpf($cpf);
     $pessoa->setEndereco($endereco);
 
-    // Cria o DAO
+    
     $dao = new PessoaDAO();
 
-    // Salva no banco
+    
     if ($dao->inserir($pessoa)) {
 
         echo "<script>

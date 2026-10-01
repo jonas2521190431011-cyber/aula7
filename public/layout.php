@@ -26,15 +26,7 @@
 
 <?php if ($ehHome): ?>
    
-    <div class="container" style="position: relative; overflow: hidden; min-height: 90vh; display: flex; flex-direction: column;">
-        <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 1;">
-            <source src="img/meuvideo.mp4" type="video/mp4">
-        </video>
-
-        <div style="position: relative; z-index: 1; padding: 20px;">
-            <?= $content ?>
-        </div>
-    </div>
+    
 <?php else: ?>
     
     <div class="container">

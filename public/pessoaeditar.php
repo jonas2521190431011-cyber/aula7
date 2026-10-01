@@ -5,7 +5,7 @@ use App\Model\Pessoa;
 
 $dao = new PessoaDAO();
 
-// Captura o ID da URL
+
 $id = $_GET['id'] ?? null;
 
 if (!$id) {
@@ -13,7 +13,6 @@ if (!$id) {
     exit;
 }
 
-// Lógica de Atualização ao enviar o formulário
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $p = new Pessoa();
     $p->setId((int)$_POST['id']);
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $p->setTelefone($_POST['telefone'] ?? null);
     $p->setEndereco($_POST['endereco'] ?? null);
 
-    // Se o seu DAO usa o método 'atualizar' ou 'editar':
+   
     if (method_exists($dao, 'atualizar')) {
         $dao->atualizar($p);
     } elseif (method_exists($dao, 'editar')) {
@@ -33,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Busca os dados da pessoa para preencher o formulário
+
 $pessoa = $dao->buscarPorId((int)$id);
 
 if (!$pessoa) {
@@ -41,7 +40,7 @@ if (!$pessoa) {
     exit;
 }
 
-// Transforma em array se o retorno for um Objeto Pessoa
+
 if (is_object($pessoa)) {
     $pessoaData = [
         'id' => method_exists($pessoa, 'getId') ? $pessoa->getId() : $pessoa->id,
