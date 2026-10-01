@@ -1,3 +1,4 @@
+
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -8,10 +9,7 @@ use App\Model\Pessoa;
 
 $pessoaDAO = new PessoaDAO();
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
-
     $p = new Pessoa();
 
     $p->setNome($_POST['nome'] ?? '');
@@ -25,45 +23,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
     exit;
 }
 
-
 $pagina = $_GET['pagina'] ?? 'home';
 
 ob_start();
 
 switch ($pagina) {
 
-   
-
     case 'home':
-
         $controller = new HomeController();
-
         echo $controller->index();
+        ?>
 
+        <div class="container mt-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Vídeo de apresentação</h4>
+                </div>
+
+                <div class="card-body">
+                    <video
+                        class="w-100 rounded"
+                        controls
+                        preload="metadata"
+                        style="max-height: 500px; background: #000;"
+                    >
+                        <source src="img/videolki.mp4" type="video/mp4">
+                        Seu navegador não suporta vídeos.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <?php
         break;
-
-
-   
 
     case 'cadastrar':
         ?>
 
         <div class="card shadow-sm">
-
             <div class="card-header bg-primary text-white">
-
-                <h4 class="mb-0">
-                    Cadastrar Nova Pessoa
-                </h4>
-
+                <h4 class="mb-0">Cadastrar Nova Pessoa</h4>
             </div>
 
             <div class="card-body">
-
                 <form method="POST">
 
                     <div class="mb-3">
-
                         <label for="nome" class="form-label">
                             Nome Completo
                         </label>
@@ -76,12 +81,9 @@ switch ($pagina) {
                             maxlength="100"
                             required
                         >
-
                     </div>
 
-
                     <div class="mb-3">
-
                         <label for="cpf" class="form-label">
                             CPF
                         </label>
@@ -95,12 +97,9 @@ switch ($pagina) {
                             placeholder="Apenas números"
                             required
                         >
-
                     </div>
 
-
                     <div class="mb-3">
-
                         <label for="telefone" class="form-label">
                             Telefone
                         </label>
@@ -112,12 +111,9 @@ switch ($pagina) {
                             name="telefone"
                             maxlength="15"
                         >
-
                     </div>
 
-
                     <div class="mb-3">
-
                         <label for="endereco" class="form-label">
                             Endereço
                         </label>
@@ -129,9 +125,7 @@ switch ($pagina) {
                             name="endereco"
                             maxlength="255"
                         >
-
                     </div>
-
 
                     <button
                         type="submit"
@@ -142,74 +136,47 @@ switch ($pagina) {
                     </button>
 
                 </form>
-
             </div>
-
         </div>
 
         <?php
         break;
 
-
-   
-
     case 'listar':
-
         $pessoas = $pessoaDAO->listar();
-
         ?>
 
-        <div
-            style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                margin-bottom:20px;
-            "
-        >
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        ">
+            <h2>Pessoas Cadastradas</h2>
 
-            <h2>
-                Pessoas Cadastradas
-            </h2>
-
-            <a
-                href="index.php?pagina=cadastrar"
-                class="btn"
-            >
+            <a href="index.php?pagina=cadastrar" class="btn">
                 Nova Pessoa
             </a>
-
         </div>
 
-
         <table>
-
             <thead>
-
                 <tr>
-
                     <th>ID</th>
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
                     <th>Endereço</th>
                     <th>Ações</th>
-
                 </tr>
-
             </thead>
 
-
             <tbody>
-
                 <?php if (!empty($pessoas)): ?>
-
                     <?php foreach ($pessoas as $p): ?>
-
                         <tr>
-
                             <td>
-                                <?= htmlspecialchars($p['id']) ?>
+                                <?= htmlspecialchars((string) $p['id']) ?>
                             </td>
 
                             <td>
@@ -229,102 +196,62 @@ switch ($pagina) {
                             </td>
 
                             <td>
-
                                 <a
-                                    href="index.php?pagina=editar&id=<?= $p['id'] ?>"
+                                    href="index.php?pagina=editar&id=<?= (int) $p['id'] ?>"
                                     class="btn"
                                 >
                                     Editar
                                 </a>
 
                                 <a
-                                    href="index.php?pagina=excluir&id=<?= $p['id'] ?>"
+                                    href="index.php?pagina=excluir&id=<?= (int) $p['id'] ?>"
                                     class="btn btn-danger"
                                     onclick="return confirm('Tem certeza que deseja excluir?')"
                                 >
                                     Excluir
                                 </a>
-
                             </td>
-
                         </tr>
-
                     <?php endforeach; ?>
-
                 <?php else: ?>
-
                     <tr>
-
-                        <td
-                            colspan="6"
-                            style="text-align:center;"
-                        >
+                        <td colspan="6" style="text-align: center;">
                             Nenhuma pessoa cadastrada.
                         </td>
-
                     </tr>
-
                 <?php endif; ?>
-
             </tbody>
-
         </table>
 
         <?php
-
         break;
 
-
-   
     case 'editar':
-
         require __DIR__ . '/pessoaeditar.php';
-
         break;
-
 
     case 'excluir':
-
         require __DIR__ . '/pessoaexcluir.php';
-
         break;
 
-
- 
     case 'pesquisar':
-
         require __DIR__ . '/pessoapesquisar.php';
-
         break;
 
-
-  
     case 'movimentacoes':
-
         require __DIR__ . '/movimentacaolist.php';
-
         break;
-
-
-    
 
     case 'movimentacao-cadastrar':
-
         require __DIR__ . '/movimentacaocreate.php';
-
         break;
 
-
-  
-
     default:
-
         echo '
             <div class="alert alert-danger">
                 Página não encontrada.
             </div>
         ';
-
         break;
 }
 
