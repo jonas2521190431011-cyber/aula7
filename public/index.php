@@ -1,4 +1,3 @@
-
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -7,23 +6,28 @@ use App\Controller\HomeController;
 use App\DAO\PessoaDAO;
 use App\Model\Pessoa;
 
-$pessoaDAO = new PessoaDAO();
+$pagina = $_GET['pagina'] ?? 'home';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cadastrar'])) {
-    $p = new Pessoa();
+    try {
+        $pessoaDAO = new PessoaDAO();
 
-    $p->setNome($_POST['nome'] ?? '');
-    $p->setCpf($_POST['cpf'] ?? '');
-    $p->setTelefone($_POST['telefone'] ?? null);
-    $p->setEndereco($_POST['endereco'] ?? null);
+        $p = new Pessoa();
+        $p->setNome($_POST['nome'] ?? '');
+        $p->setCpf($_POST['cpf'] ?? '');
+        $p->setTelefone($_POST['telefone'] ?? null);
+        $p->setEndereco($_POST['endereco'] ?? null);
 
-    $pessoaDAO->cadastrar($p);
+        $pessoaDAO->cadastrar($p);
 
-    header('Location: index.php?pagina=listar');
-    exit;
+        header('Location: index.php?pagina=listar');
+        exit;
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        http_response_code(500);
+        exit('Não foi possível cadastrar. Verifique a conexão com o banco de dados.');
+    }
 }
-
-$pagina = $_GET['pagina'] ?? 'home';
 
 ob_start();
 
@@ -67,74 +71,34 @@ switch ($pagina) {
 
             <div class="card-body">
                 <form method="POST">
-
                     <div class="mb-3">
-                        <label for="nome" class="form-label">
-                            Nome Completo
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="nome"
-                            name="nome"
-                            maxlength="100"
-                            required
-                        >
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome"
+                               name="nome" maxlength="100" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="cpf" class="form-label">
-                            CPF
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="cpf"
-                            name="cpf"
-                            maxlength="11"
-                            placeholder="Apenas números"
-                            required
-                        >
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf"
+                               name="cpf" maxlength="11"
+                               placeholder="Apenas números" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="telefone" class="form-label">
-                            Telefone
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="telefone"
-                            name="telefone"
-                            maxlength="15"
-                        >
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="text" class="form-control" id="telefone"
+                               name="telefone" maxlength="15">
                     </div>
 
                     <div class="mb-3">
-                        <label for="endereco" class="form-label">
-                            Endereço
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="endereco"
-                            name="endereco"
-                            maxlength="255"
-                        >
+                        <label for="endereco" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="endereco"
+                               name="endereco" maxlength="255">
                     </div>
 
-                    <button
-                        type="submit"
-                        name="cadastrar"
-                        class="btn btn-success"
-                    >
+                    <button type="submit" name="cadastrar" class="btn btn-success">
                         Salvar no Banco
                     </button>
-
                 </form>
             </div>
         </div>
@@ -143,20 +107,22 @@ switch ($pagina) {
         break;
 
     case 'listar':
-        $pessoas = $pessoaDAO->listar();
+        try {
+            $pessoaDAO = new PessoaDAO();
+            $pessoas = $pessoaDAO->listar();
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            $pessoas = [];
+
+            echo '<div class="alert alert-warning">
+                    Banco de dados indisponível. A listagem não pode ser exibida agora.
+                  </div>';
+        }
         ?>
 
-        <div style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        ">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
             <h2>Pessoas Cadastradas</h2>
-
-            <a href="index.php?pagina=cadastrar" class="btn">
-                Nova Pessoa
-            </a>
+            <a href="index.php?pagina=cadastrar" class="btn">Nova Pessoa</a>
         </div>
 
         <table>
@@ -175,39 +141,18 @@ switch ($pagina) {
                 <?php if (!empty($pessoas)): ?>
                     <?php foreach ($pessoas as $p): ?>
                         <tr>
+                            <td><?= htmlspecialchars((string) ($p['id'] ?? '')) ?></td>
+                            <td><?= htmlspecialchars($p['nome'] ?? '') ?></td>
+                            <td><?= htmlspecialchars($p['cpf'] ?? '') ?></td>
+                            <td><?= htmlspecialchars($p['telefone'] ?? '') ?></td>
+                            <td><?= htmlspecialchars($p['endereco'] ?? '') ?></td>
                             <td>
-                                <?= htmlspecialchars((string) $p['id']) ?>
-                            </td>
+                                <a href="index.php?pagina=editar&id=<?= (int) ($p['id'] ?? 0) ?>"
+                                   class="btn">Editar</a>
 
-                            <td>
-                                <?= htmlspecialchars($p['nome']) ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($p['cpf']) ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($p['telefone'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <?= htmlspecialchars($p['endereco'] ?? '') ?>
-                            </td>
-
-                            <td>
-                                <a
-                                    href="index.php?pagina=editar&id=<?= (int) $p['id'] ?>"
-                                    class="btn"
-                                >
-                                    Editar
-                                </a>
-
-                                <a
-                                    href="index.php?pagina=excluir&id=<?= (int) $p['id'] ?>"
-                                    class="btn btn-danger"
-                                    onclick="return confirm('Tem certeza que deseja excluir?')"
-                                >
+                                <a href="index.php?pagina=excluir&id=<?= (int) ($p['id'] ?? 0) ?>"
+                                   class="btn btn-danger"
+                                   onclick="return confirm('Tem certeza que deseja excluir?')">
                                     Excluir
                                 </a>
                             </td>
@@ -215,8 +160,8 @@ switch ($pagina) {
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6" style="text-align: center;">
-                            Nenhuma pessoa cadastrada.
+                        <td colspan="6" style="text-align:center;">
+                            Nenhuma pessoa cadastrada ou banco indisponível.
                         </td>
                     </tr>
                 <?php endif; ?>
@@ -247,11 +192,7 @@ switch ($pagina) {
         break;
 
     default:
-        echo '
-            <div class="alert alert-danger">
-                Página não encontrada.
-            </div>
-        ';
+        echo '<div class="alert alert-danger">Página não encontrada.</div>';
         break;
 }
 
